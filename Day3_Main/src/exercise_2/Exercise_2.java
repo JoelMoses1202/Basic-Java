@@ -1,53 +1,39 @@
 package exercise_2;
-
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 public class Exercise_2 {
 
-	public static void main(String[] args) {
-		// TODO Auto-generated method stub
+	  public static void main(String[] args) {
+	    ExecutorService executorService = Executors.newFixedThreadPool(5);
+	    MessageInbox message = new MessageInbox();
+	    executorService.execute(() -> {
 
-new Thread(new Runnable() {
-			
-			@Override
-			public void run() {
-				MySingleTon.createInstance("[---THREAD 1 OBJECT---]");
-				
-			}
-		}).start();
-		new Thread(new Runnable() {
-			
-			@Override
-			public void run() {
-				MySingleTon.createInstance("[---THREAD 2 OBJECT---]");
-				
-			}
-		}).start();
-	    new Thread(new Runnable() {
-			
-			@Override
-			public void run() {
-				MySingleTon.createInstance("[---THREAD 3 OBJECT---]");
-				
-			}
-		}).start();
-	    new Thread(new Runnable() {
-			
-			@Override
-			public void run() {
-				MySingleTon.createInstance("[---THREAD 4 OBJECT---]");
-				
-			}
-		}).start();
+	      message.displayMessage("[");
+
+	    });
+	    executorService.execute(() -> {
+
+	      message.displayMessage("------");
+
+	    });
+	    executorService.execute(() -> {
+
+	      message.displayMessage("Message");
+
+	    });
+
+	    executorService.execute(() -> {
+
+	      message.displayMessage("------");
+
+	    });
+	    executorService.execute(() -> {
+
+	      message.displayMessage("]");
+
+	    });
+	    executorService.shutdown();
+
+	  }
 	}
-}
-class MySingleTon{
-	private MySingleTon(String str) {
-		System.out.println(str);
-	}
-	private static MySingleTon obj;
-	synchronized public static MySingleTon createInstance(String str) {
-		if(obj==null) {
-			obj=new MySingleTon(str);
-		}
-		return obj;
-	}
-}
+

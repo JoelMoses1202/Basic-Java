@@ -1,48 +1,31 @@
 package exercise_8;
 
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
 public class Exercise_8 {
-	public static void main(String[] args) {
-		StringBuffer str =new StringBuffer("A");
-		A.aa(str);
-		
-		str.setCharAt(0, (char)(str.charAt(0) + 1));
-		A.aa(str);
-		str.setCharAt(0, (char)(str.charAt(0) + 1));
-		A.aa(str);
+  public static void main(String[] args) {
+    StringBuffer character = new StringBuffer("A");
 
-		
-	}
+    ExecutorService executorService = Executors.newFixedThreadPool(3);
+    IterativeCharacter iterativeChar = new IterativeCharacter();
+    executorService.execute(() -> {
 
-}
+      iterativeChar.characterIteration(character);
 
+    });
+    executorService.execute(() -> {
 
-class A extends Thread{
-	StringBuffer a;
+      iterativeChar.characterIteration(character);
 
-	private  void A(StringBuffer str) {
-		// TODO Auto-generated constructor stub
-		a=str;
-		run();
-	}
-	public void run() {
-		// TODO Auto-generated method stub
-		synchronized (a) {
-			for(int i=1;i<=100;i++)
-			{
-				System.out.println(a);
-			}
-			
-		}
-		
-	}
-	
-    static void aa(StringBuffer a) {
-        A a2 = new A();
-		a2.A(a);
-		
-	}
-	
-	
-	
-	
+    });
+    executorService.execute(() -> {
+
+      iterativeChar.characterIteration(character);
+
+    });
+    executorService.shutdown();
+
+  }
+
 }

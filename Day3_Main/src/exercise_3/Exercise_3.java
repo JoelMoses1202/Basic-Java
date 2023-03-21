@@ -1,71 +1,38 @@
 package exercise_3;
 
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class Exercise_3 {
 
-	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-		
+  public static void main(String[] args) {
 
-while(true) {
+    ExecutorService executorService = Executors.newFixedThreadPool(2);
+    Inventory inventory = new Inventory();
+    executorService.execute(() -> {
 
+      while (true) {
 
-new Thread(new Runnable() {
-	
-	public void run() {
-		
-		
-		Inventory.produce();
-		
-	}
-}).start();
+        inventory.produce();
 
-new Thread(new Runnable() {
-			
-			@Override
-			public void run() {
-				
-			    Inventory.consume();
-				
-			
-				
-			}
-		}).start();
+      }
+    });
+    executorService.execute(() -> {
+      while (true) {
 
- try {
-	Thread.sleep(1000);
-} catch (InterruptedException e) {
-	// TODO Auto-generated catch block
-	e.printStackTrace();
+        inventory.consume();
+
+      }
+    });
+    executorService.shutdown();
+  }
 }
-      
-}
-	}
-}
-class Inventory{
-	static int inventory=0;
-	static void produce()  {
-		
-		    if(inventory==0)
-		    {
-			System.out.println("Product Added ");
-			inventory=1;
-		
-		    }
-		    
-	}
-	static void consume() {
-		
-		if(inventory==1) {
-			System.out.println("Consumed Product");
-			inventory=0;
-		
 
-		}
-	
-		
-	}
-	
-	
-	
-}
+
+
+
+
+
+
+
+
